@@ -190,11 +190,11 @@ serve(app, model, [options])
   * **protected** - String of comma separated field names which are not to be returned by queries that have public access.
   * **postProcess** - A middleware to be called after the response has been sent. It is only executed on success.  If an error is sent to the client, this is not executed.
   * **lean** - If `false`, will not convert to returned values to plain old javascript objects. This is bad for performance, but it allows for returning virtuals, getters    and setters.
-  * **findOneAndUpdate** - If `false`, will first find documents by id and then call save. This
+  * **findOneAndUpdate** - If `true`, will first find documents by id and then call save. This
     allows mongoose validators to be called. Default is `true`.
     (For more information, read the Mongoose docs:
     http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate)
-  * **findOneAndRemove** - If `false`, will first find documents by id and then call remove. This
+  * **findOneAndRemove** - If `true`, will first find documents by id and then call remove. This
     allows mongoose post and pre hooks to be called. Default is `true`.
     (For more information, read the Mongoose docs:
     http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove)
@@ -202,7 +202,8 @@ serve(app, model, [options])
  * **postCreate** - A function with the signature `function (res, result, done)` which is run after document creation.
  * **postDelete** - A function with the signature `function (res, result, done)` which is run after document deletion.
  * **fullErrors** - When an occurs in mongoose, the full error object, if available, will be returned instead of just the HTTP status message.  Default false
-
+ * **upsert** - When `true`, will create a document on PUT if it does not already exist.
+ 
 ### defaults
 ```
 defaults(options)
