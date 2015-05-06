@@ -644,6 +644,24 @@ module.exports = function(createFn) {
                         done();
                     });
                 });
+
+                it('200 GET distinct comment', function(done) {
+                    request.get({
+                        url: util.format('%s/api/v1/Customers/distinct/comment', testUrl),
+                        json: true
+                    }, function (err, res, body) {
+                        if(typeof body === 'string'){
+                            body = JSON.parse(body);
+                        }
+
+                        console.log('body', body);
+                        console.log('body length', body.length);
+
+                        assert.equal(res.statusCode, 200, 'Wrong status code');
+                        assert.deepEqual(body, ['Comment', 'Comment 2'], 'Incorrect result');
+                        done();
+                    });
+                });
             });
 
             describe('Return virtuals', function() {

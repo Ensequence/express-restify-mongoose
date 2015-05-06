@@ -149,10 +149,17 @@ GET http://localhost/api/v1/Customers?sort=-name
 GET http://localhost/api/v1/Customers?skip=10&limit=10
 ```
 
+### Distinct
+```
+GET http://localhost/api/v1/Customers/distinct/:field
+GET http://localhost/api/v1/Customers/distinct/:field?name=value
+```
+
 ### Populate Fields
 ```
 GET http://localhost/api/v1/Invoices?populate=customer
 GET http://localhost/api/v1/Invoices?populate=customer&select=customer.name
+```
 
 ## populate fields will not have effect on select fields as supported by Mongoose
 # populate fields will be fetched along with select fields
@@ -160,7 +167,6 @@ GET http://localhost/api/v1/Invoices?populate=customer
 GET http://localhost/api/v1/Invoices?populate=customer&select=amount
 GET http://localhost/api/v1/Invoices?populate=customer&select=customer,amount
 GET http://localhost/api/v1/Invoices?populate=customer&select=customer.name,amount
-
 ```
 
 ## Reference
