@@ -159,7 +159,6 @@ GET http://localhost/api/v1/Customers/distinct/:field?name=value
 ```
 GET http://localhost/api/v1/Invoices?populate=customer
 GET http://localhost/api/v1/Invoices?populate=customer&select=customer.name
-```
 
 ## populate fields will not have effect on select fields as supported by Mongoose
 # populate fields will be fetched along with select fields
