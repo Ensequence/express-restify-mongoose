@@ -654,9 +654,6 @@ module.exports = function(createFn) {
                             body = JSON.parse(body);
                         }
 
-                        console.log('body', body);
-                        console.log('body length', body.length);
-
                         assert.equal(res.statusCode, 200, 'Wrong status code');
                         assert.deepEqual(body, ['Comment', 'Comment 2'], 'Incorrect result');
                         done();
@@ -1923,6 +1920,46 @@ module.exports = function(createFn) {
                         });
                     });
                 });
+            });
+
+            describe('Option "upsert"', function() {
+                var server,
+                    error,
+                    customerId = '554bf3ed0432b8e715ce02e2',
+                    options = {
+                        upsert: true
+                    },
+                    app = createFn();
+                setup();
+
+                before(function(done) {
+                    erm.defaults({
+                        restify: app.isRestify,
+                        outputFn: app.outputFn,
+                        lean: false
+                    });
+                    erm.serve(app, setup.customerModel, options);
+
+                    server = app.listen(testPort, done);
+                });
+
+                after(function(done) {
+                    if (app.close) {
+                        return app.close(done);
+                    }
+                    server.close(done);
+                });
+
+                it('works with PUT/:id', function(done) {
+                    request.put({
+                        url: util.format('%s/api/v1/Customers/%s', testUrl, customerId),
+                        json: {name: 'A', address: 'addy1'}
+                    }, function(err, res, body) {
+                        assert.equal(res.statusCode, 201, 'Wrong status code');
+                        done();
+                    });
+                });
+
             });
         });
     };
