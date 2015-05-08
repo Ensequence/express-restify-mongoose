@@ -1925,7 +1925,7 @@ module.exports = function(createFn) {
             describe('Option "upsert"', function() {
                 var server,
                     error,
-                    customerId = '554bf3ed0432b8e715ce02e2',
+                    goodCustomerId,
                     options = {
                         upsert: true
                     },
@@ -1940,7 +1940,13 @@ module.exports = function(createFn) {
                     });
                     erm.serve(app, setup.customerModel, options);
 
-                    server = app.listen(testPort, done);
+                    setup.customerModel.create([
+                            {name: 'A', address: 'addy1'}
+                        ],
+                        function(err, good1) {
+                            goodCustomerId = good1._id;
+                            server = app.listen(testPort, done);
+                        });
                 });
 
                 after(function(done) {
@@ -1951,15 +1957,25 @@ module.exports = function(createFn) {
                 });
 
                 it('works with PUT/:id', function(done) {
+                    var customerId = '554bf3ed0432b8e715ce02e2';
                     request.put({
                         url: util.format('%s/api/v1/Customers/%s', testUrl, customerId),
-                        json: {name: 'A', address: 'addy1'}
+                        json: {name: 'B', address: 'addy1'}
                     }, function(err, res, body) {
                         assert.equal(res.statusCode, 201, 'Wrong status code');
                         done();
                     });
                 });
 
+                it('works with PUT/:id for existing object', function(done) {
+                    request.put({
+                        url: util.format('%s/api/v1/Customers/%s', testUrl, goodCustomerId),
+                        json: {name: 'A', address: 'addy1'}
+                    }, function(err, res, body) {
+                        assert.equal(res.statusCode, 200, 'Wrong status code');
+                        done();
+                    });
+                });
             });
         });
     };
