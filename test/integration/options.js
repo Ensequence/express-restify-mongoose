@@ -729,9 +729,8 @@ module.exports = function (createFn, setup, dismantle) {
     })
   })
 
-  describe('upsert', function() {
+  describe('upsert', function () {
     var server
-    var error
     var goodCustomerId
     var app = createFn()
     var options = {
@@ -740,7 +739,7 @@ module.exports = function (createFn, setup, dismantle) {
       upsert: true
     }
 
-    before(function(done) {
+    before(function (done) {
       setup(function (err) {
         if (err) {
           return done(err)
@@ -750,7 +749,7 @@ module.exports = function (createFn, setup, dismantle) {
 
         erm.serve(app, db.models.Customer, {
           restify: app.isRestify,
-          outputFn: app.outputFn,
+          outputFn: app.outputFn
         })
 
         db.models.Customer.create({
@@ -765,31 +764,33 @@ module.exports = function (createFn, setup, dismantle) {
       })
     })
 
-    after(function(done) {
+    after(function (done) {
       erm.defaults(null)
       dismantle(app, server, done)
-    });
+    })
 
-    it('works with PUT/:id', function(done) {
-      var customerId = '554bf3ed0432b8e715ce02e2';
+    it('works with PUT/:id', function (done) {
+      var customerId = '554bf3ed0432b8e715ce02e2'
       request.put({
         url: util.format('%s/api/v1/Customers/%s', testUrl, customerId),
         json: {name: 'B', address: 'addy1'}
-      }, function(err, res, body) {
-        console.log('statusCode: ', res.statusCode);
-        assert.equal(res.statusCode, 200, 'Wrong status code');
-        done();
-      });
-    });
+      }, function (err, res, body) {
+        assert.ok(!err)
+        console.log('statusCode: ', res.statusCode)
+        assert.equal(res.statusCode, 200, 'Wrong status code')
+        done()
+      })
+    })
 
-    it('works with PUT/:id for existing object', function(done) {
+    it('works with PUT/:id for existing object', function (done) {
       request.put({
         url: util.format('%s/api/v1/Customers/%s', testUrl, goodCustomerId),
         json: {name: 'A', address: 'addy1'}
-      }, function(err, res, body) {
-        assert.equal(res.statusCode, 200, 'Wrong status code');
-        done();
-      });
-    });
-  });
+      }, function (err, res, body) {
+        assert.ok(!err)
+        assert.equal(res.statusCode, 200, 'Wrong status code')
+        done()
+      })
+    })
+  })
 }

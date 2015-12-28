@@ -1051,7 +1051,6 @@ module.exports = function (createFn, setup, dismantle) {
           done()
         })
       })
-
     })
 
     describe('count', function () {
