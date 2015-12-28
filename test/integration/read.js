@@ -1052,20 +1052,6 @@ module.exports = function (createFn, setup, dismantle) {
         })
       })
 
-      it('200 GET distinct comment', function(done) {
-        request.get({
-          url: util.format('%s/api/v1/Customers/distinct/name', testUrl),
-          json: true
-        }, function (err, res, body) {
-          if(typeof body === 'string'){
-            body = JSON.parse(body);
-          }
-
-          assert.equal(res.statusCode, 200, 'Wrong status code');
-          assert.deepEqual(body, ['Bob', 'John', 'Mike'], 'Incorrect result');
-          done();
-        });
-      });
     })
 
     describe('count', function () {
